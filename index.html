@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chatContainer {
+            width: 800px;
+            height: 600px;
+            border: 1px solid #fff;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        #chatBox {
+            flex-grow: 1;
+            overflow-y: scroll;
+            border: 1px solid #fff;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+        }
+        #username, #chatIdInput, #messageInput {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #fff;
+            background-color: #222;
+            color: #fff;
+            font-size: 16px;
+        }
+        #joinChat, #sendMessage {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #555;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #joinChat {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatContainer">
+        <input type="text" id="username" placeholder="Enter username">
+        <button id="createChat">Create New Chat</button>
+        <input type="text" id="chatIdInput" placeholder="Enter chat ID to join">
+        <button id="joinChat">Join Chat</button>
+        <div id="chatBox"></div>
+        <input type="text" id="messageInput" placeholder="Type a message">
+        <button id="sendMessage">Send</button>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer
