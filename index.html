@@ -42,7 +42,7 @@
             color: #fff;
             font-size: 16px;
         }
-        #joinChat, #sendMessage {
+        #joinChat, #createChat, #sendMessage {
             width: 100%;
             padding: 15px;
             border: none;
@@ -69,4 +69,95 @@
     </div>
 
     <script>
-        const chatContainer = document.getElementById('chatContainer
+        const chatContainer = document.getElementById('chatContainer');
+        const chatBox = document.getElementById('chatBox');
+        const usernameInput = document.getElementById('username');
+        const chatIdInput = document.getElementById('chatIdInput');
+        const messageInput = document.getElementById('messageInput');
+        const createChatButton = document.getElementById('createChat');
+        const joinChatButton = document.getElementById('joinChat');
+        const sendMessageButton = document.getElementById('sendMessage');
+        let chatId;
+
+        // Load username and last chatId from localStorage
+        window.onload = () => {
+            const savedUsername = localStorage.getItem('username');
+            const savedChatId = localStorage.getItem('lastChatId');
+            if (savedUsername) {
+                usernameInput.value = savedUsername;
+            }
+            if (savedChatId) {
+                chatId = savedChatId;
+                chatIdInput.value = chatId;
+                loadChat();
+            }
+        };
+
+        // Function to generate a random 6-digit chat ID
+        function generateChatId() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        // Function to load chat messages from localStorage
+        function loadChat() {
+            const chatMessages = JSON.parse(localStorage.getItem(chatId)) || [];
+            chatBox.innerHTML = chatMessages.map(msg => `<div><strong>${msg.username}:</strong> ${msg.text}</div>`).join('');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Function to save message to localStorage
+        function saveMessage(username, text) {
+            const chatMessages = JSON.parse(localStorage.getItem(chatId)) || [];
+            chatMessages.push({ username, text });
+            localStorage.setItem(chatId, JSON.stringify(chatMessages));
+        }
+
+        // Create a new chat
+        createChatButton.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            if (!username) {
+                alert('Please enter a username.');
+                return;
+            }
+            chatId = generateChatId();
+            localStorage.setItem('username', username);
+            localStorage.setItem('lastChatId', chatId);
+            alert(`Chat ID: ${chatId}. Share this ID with others to join the chat.`);
+            loadChat();
+        });
+
+        // Join an existing chat
+        joinChatButton.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            if (!username) {
+                alert('Please enter a username.');
+                return;
+            }
+            chatId = chatIdInput.value.trim();
+            if (!chatId) {
+                alert('Please enter a valid chat ID.');
+                return;
+            }
+            localStorage.setItem('username', username);
+            localStorage.setItem('lastChatId', chatId);
+            loadChat();
+        });
+
+        // Send a message
+        sendMessageButton.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            if (!username || !chatId) {
+                alert('Please join a chat first.');
+                return;
+            }
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                saveMessage(username, messageText);
+                loadChat();
+                messageInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
+
